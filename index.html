@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/src//style//style.css" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+            crossorigin="anonymous"
+        />
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"
+        ></script>
+        <title>Buscador de pokemon</title>
+    </head>
+    <body class="body">
+        <div class="pokemon_container_img  ">
+            <img src="/src//img/image 12.png" class="img_logo" alt="">
+            <img
+                src="/src/./img/871383.png"
+                class="img_ball "
+            />
+
+        </div>
+
+        <form
+            class="pokemon_form d-flex justify-content-center align-items-center w-100"
+        >
+            <div class="mb-3 w-100 d-flex gap-2 justify-content-center">
+                <input
+                    type="text"
+                    class="pokemon_name form-control w-50"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder="Escriba el pokemon o busque su numero hasta 1008"
+                />
+
+                <button type="submit" class="btn btn-primary w-10 text-center">
+                    Submit
+                </button>
+            </div>
+        </form>
+       
+        <div class="pokemon_container" id="pokemon_container"></div>
+        <div class="pokemon-content" id="pokemonContent"></div>
+        <div id="spinner" class="spinner-border text-warning" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        
+        <!-- paginacion -->
+        <footer id='paginacion' class="pokedex__header-aline d-flex justify-content-center gap-5 m-5">
+            <button id='previous'type="button" class="  btn btn-danger">anterior</button>
+    
+            <button id="next" type="button" class="btn btn-success">siguiente</button>
+        </footer>
+        <script src="/src//js/js.js"></script>
+    </body>
+</html>
