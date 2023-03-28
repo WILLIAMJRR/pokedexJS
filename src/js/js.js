@@ -28,17 +28,18 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
 
         const pokemonName = pokemonInput.value.toLowerCase().trim();
-        if (pokemonName === '') return; // no hacer nada si se envía un nombre vacío
+        if (pokemonName === ''||pokemonName === '0') return; // no hacer nada si se envía un nombre vacío
         const existingCards = document.querySelectorAll('.flip-card');
 
         Array.from(existingCards).map((card) => card.remove());
         getPokemon(pokemonName);
+        suggestionsContainer.innerHTML = ''
     });
 
     //buscar pokemon por sugerencia
     pokemonInput.addEventListener('input', async () => {
         const searchTerm = pokemonInput.value.trim().toLowerCase();
-        if (searchTerm.length >= 2) {
+        if (searchTerm.length >= 1) {
             try {
                 const response = await fetch(
                     `https://pokeapi.co/api/v2/pokemon?limit=1118`,
@@ -124,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const createPokemon = (pokemon) => {
         const pokemonContainer = document.querySelector('.pokemon_container');
-        const modalSearch = document.querySelector('.pokemon_container');
         // ultimo paso para las card
         const flipCard = document.createElement('DIV');
         flipCard.classList.add('flip-card');
