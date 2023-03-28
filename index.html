@@ -19,13 +19,9 @@
         <title>Buscador de pokemon</title>
     </head>
     <body class="body">
-        <div class="pokemon_container_img  ">
-            <img src="/src//img/image 12.png" class="img_logo" alt="">
-            <img
-                src="/src/./img/871383.png"
-                class="img_ball "
-            />
-
+        <div class="pokemon_container_img">
+            <img src="/src//img/image 12.png" class="img_logo" alt="" />
+            <img src="/src/./img/871383.png" class="img_ball" />
         </div>
 
         <form
@@ -34,10 +30,11 @@
             <div class="mb-3 w-100 d-flex gap-2 justify-content-center">
                 <input
                     type="text"
-                    class="pokemon_name form-control w-50"
+                    class="pokemon_name border-danger form-control w-50"
+                    autocomplete="off"
                     id="exampleInputEmail1"
                     aria-describedby="emailHelp"
-                    placeholder="Escriba el pokemon o busque su numero hasta 1008"
+                    placeholder="Escriba el pokemon o busque su numero hasta 1118"
                 />
 
                 <button type="submit" class="btn btn-primary w-10 text-center">
@@ -45,18 +42,27 @@
                 </button>
             </div>
         </form>
-       
+
+        <div class="suggestions_container bg-white m-auto  w-50"></div>
+
         <div class="pokemon_container" id="pokemon_container"></div>
         <div class="pokemon-content" id="pokemonContent"></div>
         <div id="spinner" class="spinner-border text-warning" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
-        
+
         <!-- paginacion -->
-        <footer id='paginacion' class="pokedex__header-aline d-flex justify-content-center gap-5 m-5">
-            <button id='previous'type="button" class="  btn btn-danger">anterior</button>
-    
-            <button id="next" type="button" class="btn btn-success">siguiente</button>
+        <footer
+            id="paginacion"
+            class="pokedex__header-aline d-flex justify-content-center gap-5 m-5"
+        >
+            <button id="previous" type="button" class="btn btn-danger">
+                anterior
+            </button>
+
+            <button id="next" type="button" class="btn btn-success">
+                siguiente
+            </button>
         </footer>
         <script src="/src//js/js.js"></script>
     </body>
