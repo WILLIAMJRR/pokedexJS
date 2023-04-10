@@ -351,3 +351,33 @@ const renderPokemonCard = (pokemon) => {
 
   cardContainer.append(card);
 };
+document.addEventListener('DOMContentLoaded', () => {
+    // ... existing code ...
+
+    let btnButtonCount = 0;
+
+    const getPokemon = (pokemonName) => {
+        // ... existing code ...
+        btnButtonCount++;
+        if (btnButtonCount <= 2) {
+            btnButton();
+        }
+    };
+
+    pokemonForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const pokemonName = pokemonInput.value.toLowerCase().trim();
+        if (pokemonName === '' || pokemonName === '0') return; // no hacer nada si se envía un nombre vacío
+        const existingCards = document.querySelectorAll('.flip-card');
+
+        const copyexistingCards = [...existingCards];
+
+        copyexistingCards.map((card) => card.remove());
+
+        getPokemon(pokemonName);
+        suggestionsContainer.innerHTML = '';
+    });
+
+    // ... existing code ...
+});

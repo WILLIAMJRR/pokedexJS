@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    //SELECTORES
     const pokemonContainer = document.querySelector('.pokemon_container');
     const pokemonInput = document.querySelector('.pokemon_name');
     const pokemonForm = document.querySelector('.pokemon_form');
@@ -6,56 +7,65 @@ document.addEventListener('DOMContentLoaded', () => {
         '.suggestions_container',
     );
     const spinner = document.querySelector('#spinner');
+    const previous = document.getElementById('previous');
+    const next = document.getElementById('next');
 
-    const getPokemon = (pokemonName) => {
-        let url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}/`;
+    //VARIABLES
 
-        fetch(url)
-            .then((res) => res.json())
+    let firstIndex = 1;
+    let lastIndex = 9;
+    let arrayPokemon = [];
 
-            .then((data) => {
-                createPokemon(data);
-
-                pokemonForm.reset();
-
-                spinner.style.display = 'none';
-            })
-
-            .catch((err) => console.log(err));
-    };
+    //EVENTOS
 
     pokemonForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
         const pokemonName = pokemonInput.value.toLowerCase().trim();
-        if (pokemonName === ''||pokemonName === '0') return; // no hacer nada si se envía un nombre vacío
+        if (pokemonName === '' || pokemonName === '0') return; // no hacer nada si se envía un nombre vacío
         const existingCards = document.querySelectorAll('.flip-card');
 
-        Array.from(existingCards).map((card) => card.remove());
+        const copyexistingCards = [...existingCards];
+
+        copyexistingCards.map((card) => card.remove());
+
         getPokemon(pokemonName);
-        suggestionsContainer.innerHTML = ''
+
+        suggestionsContainer.innerHTML = '';
     });
 
     //buscar pokemon por sugerencia
     pokemonInput.addEventListener('input', async () => {
         const searchTerm = pokemonInput.value.trim().toLowerCase();
+
         if (searchTerm.length >= 1) {
             try {
-                const response = await fetch(
-                    `https://pokeapi.co/api/v2/pokemon?limit=1118`,
-                );
+                const url = `https://pokeapi.co/api/v2/pokemon?limit=1118`;
+
+                const response = await fetch(url);
+
                 const data = await response.json();
+
                 const matchingPokemon = data.results.filter((pokemon) =>
+
                     pokemon.name.startsWith(searchTerm),
                 );
-                const suggestionsHTML = matchingPokemon
-                    .map(
-                        (pokemon) =>
-                            `<div class="suggestion">${pokemon.name}</div>`,
-                    )
-                    .join('');
-                suggestionsContainer.innerHTML = suggestionsHTML;
+
+                suggestionsContainer.innerHTML = '';
+
+                const fragment = document.createDocumentFragment();
+
+                matchingPokemon.map((pokemon) => {
+                    const suggestion = document.createElement('DIV');
+                    suggestion.classList.add('suggestion');
+                    suggestion.textContent = pokemon.name;
+                    fragment.appendChild(suggestion);
+                });
+
+                suggestionsContainer.appendChild(fragment);
+
             } catch (err) {
+                
                 console.error(err);
             }
         } else {
@@ -63,56 +73,72 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    //selecciona al pokemon con el click en sugerencia
     suggestionsContainer.addEventListener('click', (event) => {
         const clickedSuggestion = event.target;
+
         if (!clickedSuggestion.classList.contains('suggestion')) return;
+
         const existingCards = document.querySelectorAll('.flip-card');
 
-        Array.from(existingCards).map((card) => card.remove());
+        const copyexistingCards = [...existingCards];
+
+        copyexistingCards.map((card) => card.remove());
+
         const selectedPokemon = clickedSuggestion.innerText;
+
         getPokemon(selectedPokemon);
+
         suggestionsContainer.innerHTML = '';
     });
 
-    // numero de pokemon
-
-    let firstIndex = 1;
-    let lastIndex = 7;
-    let arrayPokemon = [];
-
-    const addOpacity = () => {
-        const previous = document.getElementById('previous');
-        previous.classList.add('btn_opacity');
-    };
-
     previous.addEventListener('click', () => {
-        if (firstIndex <=1) {
+        if (firstIndex <= 1) {
             addOpacity();
         } else {
-            firstIndex -= 8;
+            firstIndex -= 10;
             getPokemons(firstIndex, lastIndex);
             removerElementosRepetidos(pokemonContainer);
         }
     });
 
-    const next = document.getElementById('next');
-
     next.addEventListener('click', () => {
         if (firstIndex < arrayPokemon) {
             next.classList.add('btn_opacity');
         } else {
-            firstIndex += 8;
+            firstIndex += 10;
             previous.classList.remove('btn_opacity');
             getPokemons(firstIndex, lastIndex);
             removerElementosRepetidos(pokemonContainer);
         }
     });
 
-    const getPokemons = (offset, limit) => {
+    //FUNCIONES
+
+    async function getPokemon(pokemonName) {
+        const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}/`;
+
+        try {
+            const res = await fetch(url);
+
+            const data = await res.json();
+
+            createPokemon(data);
+
+            pokemonForm.reset();
+
+            spinner.style.display = 'none';
+        } catch (err) {
+            
+            console.log(err);
+        }
+    }
+
+    const getPokemons = async (offset, limit) => {
         spinner.style.display = 'block';
         for (let i = offset; i <= offset + limit; i++) {
             arrayPokemon.push(i);
-            getPokemon(i);
+            await getPokemon(i);
         }
     };
 
@@ -121,9 +147,12 @@ document.addEventListener('DOMContentLoaded', () => {
             parent.removeChild(parent.firstChild);
         }
     }
-    getPokemons(firstIndex, lastIndex);
+    const addOpacity = () => {
+        const previous = document.getElementById('previous');
+        previous.classList.add('btn_opacity');
+    };
 
-    const createPokemon = (pokemon) => {
+    function createPokemon(pokemon) {
         const pokemonContainer = document.querySelector('.pokemon_container');
         // ultimo paso para las card
         const flipCard = document.createElement('DIV');
@@ -151,7 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
         spriteContainer.appendChild(sprite);
 
         // numero de pokemon
-
         const number = document.createElement('P');
         number.textContent = `#${pokemon.id.toString().padStart(3, 0)}`;
         number.classList.add('pokemon_number');
@@ -186,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // le vamos agregar la informacion a pokemonContainer que esta en el html
         pokemonContainer.appendChild(flipCard);
-    };
+    }
 
     function progressBars(stats) {
         const statsContainer = document.createElement('div');
@@ -225,5 +253,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return statsContainer;
     }
+
+    function btnButton() {
+        const buttonBack = document.createElement('BUTTON');
+        buttonBack.classList.add('btn_back');
+        buttonBack.textContent = 'back';
+        pokemonContainer.appendChild(buttonBack);
+    }
+    getPokemons(firstIndex, lastIndex);
     addOpacity();
 });
