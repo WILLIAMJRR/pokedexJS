@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (firstIndex <= 1) {
             addOpacity();
         } else {
-            firstIndex -= 8;
+            firstIndex -= 9;
             getPokemons(firstIndex, lastIndex);
             removerElementosRepetidos(pokemonContainer);
         }
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (firstIndex < arrayPokemon) {
             next.classList.add('btn_opacity');
         } else {
-            firstIndex += 8;
+            firstIndex += 9;
             previous.classList.remove('btn_opacity');
             getPokemons(firstIndex, lastIndex);
             removerElementosRepetidos(pokemonContainer);
